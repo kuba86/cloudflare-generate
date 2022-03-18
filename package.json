@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "{{ project-name }}",
+  "version": "1.0.0",
+  "description": "Generate email and password on Cloudflare Workers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "{{ authors }}",
+  "license": "All Rights Reserved",
+  "dependencies": {
+    "@cloudflare/wrangler": "^1.19.9"
+  }
+}
