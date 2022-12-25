@@ -1,12 +1,12 @@
 ThisBuild / version := "1.0.0"
 
-ThisBuild / scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "2.13.10"
 
 enablePlugins(ScalaJSPlugin)
 
 libraryDependencies ++= Seq(
-  "org.scala-js" %% "scalajs-library" % "1.9.0",
-  "org.scala-js" %%% "scalajs-dom" % "2.1.0"
+  "org.scala-js" %% "scalajs-library" % "1.12.0",
+  "org.scala-js" %%% "scalajs-dom" % "2.3.0"
 )
 
 scalaJSUseMainModuleInitializer := true

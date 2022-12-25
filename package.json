@@ -10,6 +10,6 @@
   "author": "{{ authors }}",
   "license": "All Rights Reserved",
   "dependencies": {
-    "@cloudflare/wrangler": "^1.19.9"
+    "@cloudflare/wrangler": "^1.20.0"
   }
 }
