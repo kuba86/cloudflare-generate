@@ -1,25 +1,15 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npx wrangler dev src/index.js` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npx wrangler publish src/index.js --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
 const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha256-wLz3iY/cO4e6vKZ4zRmo4+9XDpMcgKOvv/zEU3OMlRo=" crossorigin="anonymous">
-    <title>Generate Email and Password</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous">
+    <title>Generate Username and Password</title>
   </head>
   <body>
     <div class="container">
       <br>
-      <h3>Email: <button class="btn btn-primary" type="button" onclick="generateEmail();">Generate</button></h3>
+      <h3>Username: <button class="btn btn-primary" type="button" onclick="generateEmail(6, '');">Generate</button></h3>
       <div class="row">
         <div class="col-9">
           <input class="form-control" type="email" id="email" value="" disabled>
@@ -30,7 +20,7 @@ const html = `<!doctype html>
       </div>
     
       <br>
-      <h3>Password: <button class="btn btn-primary" type="button" onclick="generatePassword();">Generate</button></h3>
+      <h3>Password: <button class="btn btn-primary" type="button" onclick="generatePassword(20);">Generate</button></h3>
       <div class="row">
         <div class="col-9">
           <input class="form-control" type="text" id="password" value="" disabled>
@@ -40,7 +30,7 @@ const html = `<!doctype html>
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-lSABj6XYH05NydBq+1dvkMu6uiCc/MbLYOFGRkf3iQs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script>
     <script>
       function copyTxt(id) {
         const text = document.getElementById(id).value;
@@ -55,13 +45,13 @@ const html = `<!doctype html>
         return Array.from(randomNumbersArray).map((x) => charsArray[x % charsArrayLength]).join("")
       }
     
-      function generateEmail() {
-        const randomEmailUser = randomStringGenerator("wertupadfghjkzcnm234679", 6)
-        document.getElementById("email").value = randomEmailUser + "@kuba86.com"
+      function generateEmail(size, domain) {
+        const randomEmailUser = randomStringGenerator("wertupadfghjkzcnm234679", size)
+        document.getElementById("email").value = randomEmailUser + domain
       }
     
-      function generatePassword() {
-        const randomPassword = randomStringGenerator("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$$%^&*()_-", 25)
+      function generatePassword(size) {
+        const randomPassword = randomStringGenerator("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^&*,.?_-", size)
         document.getElementById("password").value = randomPassword
       }
     </script>
@@ -70,11 +60,11 @@ const html = `<!doctype html>
 `;
 
 export default {
-	async fetch(request, env, ctx) {
-		return new Response(html, {
-			headers: {
-			  'content-type': 'text/html;charset=UTF-8',
-			},
-		  });
-	},
+    async fetch(request, env, ctx) {
+        return new Response(html, {
+            headers: {
+                'content-type': 'text/html;charset=UTF-8',
+            },
+        });
+    },
 };
