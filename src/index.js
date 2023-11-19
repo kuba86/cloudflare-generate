@@ -4,18 +4,36 @@ const html = `<!doctype html>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous">
-    <title>Generate Username and Password</title>
+    <title>Generate Username and Password 0.0.2</title>
   </head>
   <body>
     <div class="container">
       <br>
-      <h3>Username: <button class="btn btn-primary" type="button" onclick="generateEmail(6, '');">Generate</button></h3>
+      <h3>Username: <button class="btn btn-primary" type="button" onclick="generateEmail(6);">Generate</button></h3>
       <div class="row">
         <div class="col-9">
-          <input class="form-control" type="email" id="email" value="" disabled>
+          <input class="form-control" type="text" id="username" value="" disabled>
         </div>
         <div class="col-1">
           <button class="btn btn-primary" type="button" onclick="copyTxt('email');">Copy</button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-9">
+          <input class="form-control" type="text" id="kuba86.com" value="" disabled>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-primary" type="button" onclick="copyTxt('kuba86.com');">Copy</button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-9">
+          <input class="form-control" type="text" id="k86.addy.io" value="" disabled>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-primary" type="button" onclick="copyTxt('k86.addy.io');">Copy</button>
         </div>
       </div>
     
@@ -45,13 +63,15 @@ const html = `<!doctype html>
         return Array.from(randomNumbersArray).map((x) => charsArray[x % charsArrayLength]).join("")
       }
     
-      function generateEmail(size, domain) {
+      function generateEmail(size) {
         const randomEmailUser = randomStringGenerator("wertupadfghjkzcnm234679", size)
-        document.getElementById("email").value = randomEmailUser + domain
+        document.getElementById("username").value = randomEmailUser;
+        document.getElementById("kuba86.com").value = randomEmailUser + "@kuba86.com";
+        document.getElementById("k86.addy.io").value = randomEmailUser + "@k86.addy.io";
       }
     
       function generatePassword(size) {
-        const randomPassword = randomStringGenerator("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^&*,.?_-", size)
+        const randomPassword = randomStringGenerator("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", size)
         document.getElementById("password").value = randomPassword
       }
     </script>
