@@ -1,6 +1,6 @@
 {
   "name": "generate",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "devDependencies": {
     "wrangler": "^3.24.0"
   },
