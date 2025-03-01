@@ -12,42 +12,42 @@ export default {
               <body>
                 <div class="container">
                   <br>
-                  <h3>Username: <button class="btn btn-primary" type="button" onclick="generateEmail(6);">Generate</button></h3>
+                  <h3>Username: <button class="btn btn-primary btn-sm" type="button" onclick="generateEmail(6);">Generate</button></h3>
                   <div class="row">
                     <div class="col-9">
-                      <input class="form-control" type="text" id="username" value="" disabled>
+                      <input class="form-control form-control-sm" type="text" id="username" value="" disabled>
                     </div>
                     <div class="col-1">
-                      <button class="btn btn-primary" type="button" onclick="copyTxt('email');">Copy</button>
+                      <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('email');">Copy</button>
                     </div>
                   </div>
                   <br>
                   <div class="row">
                     <div class="col-9">
-                      <input class="form-control" type="text" id="kuba86.com" value="" disabled>
+                      <input class="form-control form-control-sm" type="text" id="kuba86.com" value="" disabled>
                     </div>
                     <div class="col-1">
-                      <button class="btn btn-primary" type="button" onclick="copyTxt('kuba86.com');">Copy</button>
+                      <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('kuba86.com');">Copy</button>
                     </div>
                   </div>
                   <br>
                   <div class="row">
                     <div class="col-9">
-                      <input class="form-control" type="text" id="k86.addy.io" value="" disabled>
+                      <input class="form-control form-control-sm" type="text" id="k86.addy.io" value="" disabled>
                     </div>
                     <div class="col-1">
-                      <button class="btn btn-primary" type="button" onclick="copyTxt('k86.addy.io');">Copy</button>
+                      <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('k86.addy.io');">Copy</button>
                     </div>
                   </div>
                 
                   <br>
-                  <h3>Password: <button class="btn btn-primary" type="button" onclick="generatePassword(20);">Generate</button></h3>
+                  <h3>Password: <button class="btn btn-primary btn-sm" type="button" onclick="generatePassword(20);">Generate</button></h3>
                   <div class="row">
                     <div class="col-9">
-                      <input class="form-control" type="text" id="password" value="" disabled>
+                      <input class="form-control form-control-sm" type="text" id="password" value="" disabled>
                     </div>
                     <div class="col-1">
-                      <button class="btn btn-primary" type="button" onclick="copyTxt('password');">Copy</button>
+                      <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('password');">Copy</button>
                     </div>
                   </div>
                 </div>
