@@ -74,9 +74,14 @@ export default {
                     document.getElementById("kuba86.com").value = randomEmailUser + "@kuba86.com";
                     document.getElementById("k86.addy.io").value = randomEmailUser + "@k86.addy.io";
                   }
+                  
+                  const numbers = "0123456789";
+                  const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+                  const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                  const symbols = "-!^_,.";
                 
                   function generatePassword(size) {
-                    document.getElementById("password").value = randomStringGenerator("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", size)
+                    document.getElementById("password").value = randomStringGenerator(numbers+lowerLetters+upperLetters+symbols, size)
                   }
                 </script>
               </body>
