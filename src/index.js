@@ -26,25 +26,34 @@ export default {
             return now.toLocaleString('pl-PL', options);
         }
 
-        await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
-            method: 'POST', // PUT works too
-            headers: {
-                'Authorization': `Bearer ${env.ntfy_token}`,
-                'Title': `Generate | ${realIp}`,
-                'Priority': 'low',
-                'Tags': 'cloudflare,Generate'
-            },
-            body:
-                `${getCurrentDateTimeInWarsaw()}\n`+
-                `IP: ${realIp}\n`+
-                `Organization: ${json.org}\n`+
-                `Hostname: ${json.hostname}\n`+
-                `Country: ${json.country}\n`+
-                `Region: ${json.region}\n`+
-                `City: ${json.city}\n`+
-                `Postal: ${json.postal}\n`+
-                `Timezone: ${json.timezone}`
-        })
+        const urlLastPart = request.url
+            .replaceAll("https://", "")
+            .replaceAll("http://", "")
+            .replaceAll(request.headers.get("host") + "/", "")
+
+        if (urlLastPart !== "favicon.ico") {
+            await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
+                method: 'POST', // PUT works too
+                headers: {
+                    'Authorization': `Bearer ${env.ntfy_token}`,
+                    'Title': `Generate | ${realIp}`,
+                    'Priority': 'low',
+                    'Tags': 'cloudflare,Generate'
+                },
+                body:
+                    `${getCurrentDateTimeInWarsaw()}\n`+
+                    `IP: ${realIp}\n`+
+                    `Organization: ${json.org}\n`+
+                    `Hostname: ${json.hostname}\n`+
+                    `Country: ${json.country}\n`+
+                    `Region: ${json.region}\n`+
+                    `City: ${json.city}\n`+
+                    `Postal: ${json.postal}\n`+
+                    `Timezone: ${json.timezone}`
+            })
+        }
+
+
 
         const html = `<!doctype html>
             <html lang="en">
