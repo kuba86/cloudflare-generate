@@ -41,6 +41,7 @@ export default {
                     'Tags': 'cloudflare,Generate'
                 },
                 body:
+                    `${urlLastPart}\n`+
                     `${getCurrentDateTimeInWarsaw()}\n`+
                     `IP: ${realIp}\n`+
                     `Organization: ${json.org}\n`+
