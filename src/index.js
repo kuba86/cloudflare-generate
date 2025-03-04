@@ -34,15 +34,16 @@ export default {
                 'Priority': 'low',
                 'Tags': 'cloudflare,Generate'
             },
-            body: `${getCurrentDateTimeInWarsaw()}
-                IP: ${realIp}
-                Organization: ${json.org}
-                Hostname: ${json.hostname}
-                Country: ${json.country}
-                Region: ${json.region}
-                City: ${json.city}
-                Postal: ${json.postal}
-                Timezone: ${json.timezone}`
+            body:
+                `${getCurrentDateTimeInWarsaw()}\n`+
+                `IP: ${realIp}\n`+
+                `Organization: ${json.org}\n`+
+                `Hostname: ${json.hostname}\n`+
+                `Country: ${json.country}\n`+
+                `Region: ${json.region}\n`+
+                `City: ${json.city}\n`+
+                `Postal: ${json.postal}\n`+
+                `Timezone: ${json.timezone}`
         })
 
         const html = `<!doctype html>
