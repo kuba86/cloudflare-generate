@@ -50,7 +50,8 @@ export default {
                     `Region: ${json.region}\n`+
                     `City: ${json.city}\n`+
                     `Postal: ${json.postal}\n`+
-                    `Timezone: ${json.timezone}`
+                    `Timezone: ${json.timezone}\n`+
+                    `UA: ${request.headers.get("user-agent")}\n`
             })
         }
 
