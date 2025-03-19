@@ -32,27 +32,41 @@ export default {
             .replaceAll(request.headers.get("host") + "/", "")
 
         if (urlLastPart !== "favicon.ico") {
-            await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
-                method: 'POST', // PUT works too
-                headers: {
-                    'Authorization': `Bearer ${env.ntfy_token}`,
-                    'Title': `Generate | ${realIp}`,
-                    'Priority': 'low',
-                    'Tags': 'cloudflare,Generate'
-                },
-                body:
-                    `${urlLastPart}\n`+
-                    `${getCurrentDateTimeInWarsaw()}\n`+
-                    `IP: ${realIp}\n`+
-                    `Organization: ${json.org}\n`+
-                    `Hostname: ${json.hostname}\n`+
-                    `Country: ${json.country}\n`+
-                    `Region: ${json.region}\n`+
-                    `City: ${json.city}\n`+
-                    `Postal: ${json.postal}\n`+
-                    `Timezone: ${json.timezone}\n`+
-                    `UA: ${request.headers.get("user-agent")}\n`
-            })
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 seconds timeout
+
+            try {
+                await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
+                    method: 'POST', // PUT works too
+                    headers: {
+                        'Authorization': `Bearer ${env.ntfy_token}`,
+                        'Title': `Generate | ${realIp}`,
+                        'Priority': 'low',
+                        'Tags': 'cloudflare,Generate'
+                    },
+                    signal: controller.signal,
+                    body:
+                        `${urlLastPart}\n`+
+                        `${getCurrentDateTimeInWarsaw()}\n`+
+                        `IP: ${realIp}\n`+
+                        `Organization: ${json.org}\n`+
+                        `Hostname: ${json.hostname}\n`+
+                        `Country: ${json.country}\n`+
+                        `Region: ${json.region}\n`+
+                        `City: ${json.city}\n`+
+                        `Postal: ${json.postal}\n`+
+                        `Timezone: ${json.timezone}\n`+
+                        `UA: ${request.headers.get("user-agent")}\n`
+                });
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log('Fetch request timed out after 1 second');
+                } else {
+                    console.error('Fetch error:', error);
+                }
+            } finally {
+                clearTimeout(timeoutId);
+            }
         }
 
 
