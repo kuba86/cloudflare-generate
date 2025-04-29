@@ -2,7 +2,7 @@ export default {
     async fetch(request, env, ctx) {
         const realIp = request.headers.get("x-real-ip");
         const connectingIp = request.headers.get("cf-connecting-ip");
-        const url1 = `https://ipinfo.io/${realIp}?token=${env.ipinfo_token}`;
+        //const url1 = `https://ipinfo.io/${realIp}?token=${env.ipinfo_token}`;
 
         async function apiCall(url) {
             const response = await fetch(url);
@@ -10,7 +10,7 @@ export default {
             return JSON.parse(result);
         }
 
-        const json = await apiCall(url1);
+        //const json = await apiCall(url1);
 
         function getCurrentDateTimeInWarsaw() {
             const now = new Date();
@@ -31,7 +31,7 @@ export default {
             .replaceAll("http://", "")
             .replaceAll(request.headers.get("host") + "/", "")
 
-        if (urlLastPart !== "favicon.ico") {
+        if (urlLastPart !== "favicon.ico" && 1 === 0) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 seconds timeout
 
