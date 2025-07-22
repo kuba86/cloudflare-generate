@@ -2,7 +2,7 @@
   "name": "generate",
   "version": "1.0.0",
   "devDependencies": {
-    "wrangler": "^4.24.3"
+    "wrangler": "^4.25.0"
   },
   "private": true,
   "scripts": {
