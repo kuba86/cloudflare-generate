@@ -152,7 +152,7 @@ export default {
                   const symbols = "-!^_,.";
                 
                   function generatePassword(size) {
-                    document.getElementById("password").value = randomStringGenerator(numbers+lowerLetters+upperLetters+symbols, size)
+                    document.getElementById("password").value = randomStringGenerator(numbers+lowerLetters+upperLetters, size)
                   }
                 </script>
               </body>
