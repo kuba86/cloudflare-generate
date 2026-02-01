@@ -1,6 +1,6 @@
 name = "generate"
 main = "src/index.js"
-compatibility_date = "2023-12-13"
+compatibility_date = "2026-02-01"
 routes = [
     { pattern = "generate.kuba86.com", custom_domain = true }
 ]
