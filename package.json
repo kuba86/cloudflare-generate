@@ -2,12 +2,7 @@
   "name": "generate",
   "version": "1.0.0",
   "devDependencies": {
-    "wrangler": "^4.100.0"
+    "wrangler": "^4.101.0"
   },
-  "private": true,
-  "scripts": {
-    "start": "wrangler dev",
-    "deploy": "wrangler publish",
-    "update": "npm outdated; npm install -g npm-check-updates; ncu; ncu -u; npm install"
-  }
+  "private": true
 }

@@ -1,0 +1,19 @@
+{
+  "name": "generate Cloudflare Worker",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24-bookworm",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "node",
+  "updateRemoteUserUID": true,
+  "runArgs": ["--userns=keep-id"],
+  "postCreateCommand": "npm install; npm i -D wrangler@latest",
+  "forwardPorts": [8787],
+  "portsAttributes": {
+    "8787": {
+      "label": "Wrangler dev server",
+      "onAutoForward": "notify"
+    }
+  },
+  "containerEnv": {
+    "npm_config_update_notifier": "false"
+  }
+}
