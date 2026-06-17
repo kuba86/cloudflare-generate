@@ -37,7 +37,9 @@
         "com.intellij.ml.llm",
         "org.intellij.scala",
         "String Manipulation",
-        "net.sjrx.intellij.plugins.systemdunitfiles"
+        "net.sjrx.intellij.plugins.systemdunitfiles",
+        "NodeJS",
+        "JavaScript"
       ]
     }
   }
