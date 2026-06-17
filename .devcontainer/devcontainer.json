@@ -15,5 +15,30 @@
   },
   "containerEnv": {
     "npm_config_update_notifier": "false"
+  },
+  "customizations": {
+    "jetbrains": {
+      "backend": "IntelliJ",
+      "settings": {
+        "com.intellij.database:app:DatabaseSettings.page-size": 1000,
+        "com.intellij.database:app:DatabaseSettings.filters-history-size": 100,
+        "com.intellij:app:DateTimeFormatter.dateFormatPattern": "yyyy-MM-dd",
+        "com.intellij:app:DateTimeFormatter.overrideSystemDateFormat": true,
+        "com.intellij:app:EditorSettings.soft_wrap_file_masks": "*",
+        "com.intellij:app:EditorSettings.is_ensure_newline_at_eof": true,
+        "com.intellij:app:EditorSettings.remove_trailing_blank_lines": true,
+        "com.intellij:app:GeneralSettings.inactiveTimeout": 10,
+        "Git4Idea:app:Git-Application-Settings.use_credential_helper": true,
+        "com.intellij:app:Vcs-Log-App-Settings.show_changes_from_parents": true
+      },
+      "plugins": [
+        "com.github.toxdev.fish",
+        "com.github.copilot",
+        "com.intellij.ml.llm",
+        "org.intellij.scala",
+        "String Manipulation",
+        "net.sjrx.intellij.plugins.systemdunitfiles"
+      ]
+    }
   }
 }
