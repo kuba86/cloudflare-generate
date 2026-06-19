@@ -1,77 +1,97 @@
-export default {
-    async fetch(request, env, ctx) {
-        const realIp = request.headers.get("x-real-ip");
-        const connectingIp = request.headers.get("cf-connecting-ip");
-        //const url1 = `https://ipinfo.io/${realIp}?token=${env.ipinfo_token}`;
+import scala.scalajs.js
+import scala.scalajs.js.annotation._
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+import scala.concurrent.Future
+import scala.scalajs.js.JSConverters._
 
-        async function apiCall(url) {
-            const response = await fetch(url);
-            const result = await response.text();
-            return JSON.parse(result);
-        }
+@JSExportTopLevel("default")
+object Worker extends js.Object {
+  val fetch: js.Function3[js.Dynamic, js.Dynamic, js.Dynamic, js.Promise[js.Dynamic]] = { (request: js.Dynamic, env: js.Dynamic, ctx: js.Dynamic) =>
+    val realIp = request.headers.get("x-real-ip").asInstanceOf[String]
+    val connectingIp = request.headers.get("cf-connecting-ip").asInstanceOf[String]
+    //val url1 = s"https://ipinfo.io/$realIp?token=${env.selectDynamic("ipinfo_token")}"
 
-        //const json = await apiCall(url1);
+    def apiCall(url: String): Future[js.Dynamic] = {
+      js.Dynamic.global.fetch(url).asInstanceOf[js.Promise[js.Dynamic]].toFuture.flatMap { response =>
+        response.text().asInstanceOf[js.Promise[String]].toFuture
+      }.map { result =>
+        js.JSON.parse(result)
+      }
+    }
 
-        function getCurrentDateTimeInWarsaw() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Europe/Warsaw',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            };
-            return now.toLocaleString('pl-PL', options);
-        }
+    // val json = await apiCall(url1)
+    val json = js.Dynamic.global.json // Map JS global scope for 'json'
 
-        const urlLastPart = request.url
-            .replaceAll("https://", "")
-            .replaceAll("http://", "")
-            .replaceAll(request.headers.get("host") + "/", "")
+    def getCurrentDateTimeInWarsaw(): String = {
+      val now = js.Dynamic.newInstance(js.Dynamic.global.Date)()
+      val options = js.Dynamic.literal(
+        timeZone = "Europe/Warsaw",
+        year = "numeric",
+        month = "2-digit",
+        day = "2-digit",
+        hour = "2-digit",
+        minute = "2-digit",
+        second = "2-digit"
+      )
+      now.applyDynamic("toLocaleString")("pl-PL", options).asInstanceOf[String]
+    }
 
-        if (urlLastPart !== "favicon.ico" && 1 === 0) {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 seconds timeout
+    val host = request.headers.get("host").asInstanceOf[String]
+    val urlStr = request.url.asInstanceOf[String]
 
-            try {
-                await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
-                    method: 'POST', // PUT works too
-                    headers: {
-                        'Authorization': `Bearer ${env.ntfy_token}`,
-                        'Title': `Generate | ${realIp}`,
-                        'Priority': 'low',
-                        'Tags': 'cloudflare,Generate'
-                    },
-                    signal: controller.signal,
-                    body:
-                        `${urlLastPart}\n`+
-                        `${getCurrentDateTimeInWarsaw()}\n`+
-                        `IP: ${realIp}\n`+
-                        `Organization: ${json.org}\n`+
-                        `Hostname: ${json.hostname}\n`+
-                        `Country: ${json.country}\n`+
-                        `Region: ${json.region}\n`+
-                        `City: ${json.city}\n`+
-                        `Postal: ${json.postal}\n`+
-                        `Timezone: ${json.timezone}\n`+
-                        `UA: ${request.headers.get("user-agent")}\n`
-                });
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    console.log('Fetch request timed out after 1 second');
-                } else {
-                    console.error('Fetch error:', error);
-                }
-            } finally {
-                clearTimeout(timeoutId);
+    val urlLastPart = urlStr
+      .replace("https://", "")
+      .replace("http://", "")
+      .replace((if (host == null) "" else host) + "/", "")
+
+    val processFuture: Future[Unit] = if (urlLastPart != "favicon.ico" && 1 == 0) {
+      val controller = js.Dynamic.newInstance(js.Dynamic.global.AbortController)()
+      val timeoutId = js.Dynamic.global.setTimeout(() => controller.abort(), 3000)
+
+      val fetchFuture = js.Dynamic.global.fetch("https://ntfy.kuba86.com/cloudflare-workers", js.Dynamic.literal(
+        method = "POST",
+        headers = js.Dynamic.literal(
+          "Authorization" -> s"Bearer ${env.selectDynamic("ntfy_token")}",
+          "Title" -> s"Generate | $realIp",
+          "Priority" -> "low",
+          "Tags" -> "cloudflare,Generate"
+        ),
+        signal = controller.signal,
+        body = s"$urlLastPart\n" +
+               s"${getCurrentDateTimeInWarsaw()}\n" +
+               s"IP: $realIp\n" +
+               s"Organization: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("org")}\n" +
+               s"Hostname: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("hostname")}\n" +
+               s"Country: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("country")}\n" +
+               s"Region: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("region")}\n" +
+               s"City: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("city")}\n" +
+               s"Postal: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("postal")}\n" +
+               s"Timezone: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("timezone")}\n" +
+               s"UA: ${request.headers.get("user-agent")}\n"
+      )).asInstanceOf[js.Promise[js.Dynamic]].toFuture
+
+      fetchFuture.map(_ => ()).recover { case error: Throwable =>
+        error match {
+          case jsErr: js.JavaScriptException =>
+            val exceptionObj = jsErr.exception.asInstanceOf[js.Dynamic]
+            if (exceptionObj.selectDynamic("name").asInstanceOf[String] == "AbortError") {
+              js.Dynamic.global.console.log("Fetch request timed out after 1 second")
+            } else {
+              js.Dynamic.global.console.error("Fetch error:", exceptionObj)
             }
+          case _ =>
+            js.Dynamic.global.console.error("Fetch error:", error.getMessage)
         }
+      }.map { _ =>
+        js.Dynamic.global.clearTimeout(timeoutId)
+        ()
+      }
+    } else {
+      Future.successful(())
+    }
 
-
-
-        const html = `<!doctype html>
+    processFuture.map { _ =>
+      val html = """<!doctype html>
             <html lang="en" data-bs-theme="dark">
               <head>
                 <meta charset="utf-8">
@@ -156,13 +176,13 @@ export default {
                   }
                 </script>
               </body>
-            </html>
-            `;
+            </html>"""
 
-        return new Response(html, {
-            headers: {
-                'content-type': 'text/html;charset=UTF-8',
-            },
-        });
-    },
-};
+      js.Dynamic.newInstance(js.Dynamic.global.Response)(html, js.Dynamic.literal(
+        headers = js.Dynamic.literal(
+          "content-type" -> "text/html;charset=UTF-8"
+        )
+      ))
+    }.toJSPromise
+  }
+}

@@ -11,3 +11,5 @@ node_modules/
 .idea
 .dev.vars
 .wrangler
+src/index.js
+.scala-build/

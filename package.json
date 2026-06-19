@@ -1,6 +1,11 @@
 {
   "name": "generate",
   "version": "1.0.0",
+  "scripts": {
+    "build": "scala-cli --power package src/index.scala --js --js-module-kind es -o src/index.js -f",
+    "start": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
+  },
   "devDependencies": {
     "wrangler": "^4.101.0"
   },
