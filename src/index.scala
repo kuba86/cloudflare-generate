@@ -1,77 +1,15 @@
-export default {
-    async fetch(request, env, ctx) {
-        const realIp = request.headers.get("x-real-ip");
-        const connectingIp = request.headers.get("cf-connecting-ip");
-        //const url1 = `https://ipinfo.io/${realIp}?token=${env.ipinfo_token}`;
+import scala.scalajs.js
+import scala.scalajs.js.annotation._
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+import scala.concurrent.Future
+import scala.scalajs.js.JSConverters._
 
-        async function apiCall(url) {
-            const response = await fetch(url);
-            const result = await response.text();
-            return JSON.parse(result);
-        }
-
-        //const json = await apiCall(url1);
-
-        function getCurrentDateTimeInWarsaw() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Europe/Warsaw',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            };
-            return now.toLocaleString('pl-PL', options);
-        }
-
-        const urlLastPart = request.url
-            .replaceAll("https://", "")
-            .replaceAll("http://", "")
-            .replaceAll(request.headers.get("host") + "/", "")
-
-        if (urlLastPart !== "favicon.ico" && 1 === 0) {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 seconds timeout
-
-            try {
-                await fetch('https://ntfy.kuba86.com/cloudflare-workers', {
-                    method: 'POST', // PUT works too
-                    headers: {
-                        'Authorization': `Bearer ${env.ntfy_token}`,
-                        'Title': `Generate | ${realIp}`,
-                        'Priority': 'low',
-                        'Tags': 'cloudflare,Generate'
-                    },
-                    signal: controller.signal,
-                    body:
-                        `${urlLastPart}\n`+
-                        `${getCurrentDateTimeInWarsaw()}\n`+
-                        `IP: ${realIp}\n`+
-                        `Organization: ${json.org}\n`+
-                        `Hostname: ${json.hostname}\n`+
-                        `Country: ${json.country}\n`+
-                        `Region: ${json.region}\n`+
-                        `City: ${json.city}\n`+
-                        `Postal: ${json.postal}\n`+
-                        `Timezone: ${json.timezone}\n`+
-                        `UA: ${request.headers.get("user-agent")}\n`
-                });
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    console.log('Fetch request timed out after 1 second');
-                } else {
-                    console.error('Fetch error:', error);
-                }
-            } finally {
-                clearTimeout(timeoutId);
-            }
-        }
-
-
-
-        const html = `<!doctype html>
+@JSExportTopLevel("default")
+object Worker extends js.Object {
+  val fetch: js.Function3[js.Dynamic, js.Dynamic, js.Dynamic, js.Promise[
+    js.Dynamic
+  ]] = { (request: js.Dynamic, env: js.Dynamic, ctx: js.Dynamic) =>
+    val html = """<!doctype html>
             <html lang="en" data-bs-theme="dark">
               <head>
                 <meta charset="utf-8">
@@ -110,7 +48,7 @@ export default {
                       <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('k86.addy.io');">Copy</button>
                     </div>
                   </div>
-                
+
                   <br>
                   <h3>Password: <button class="btn btn-primary btn-sm" type="button" onclick="generatePassword(20);">Generate</button></h3>
                   <div class="row">
@@ -130,7 +68,7 @@ export default {
                     const text = document.getElementById(id).value;
                     navigator.clipboard.writeText(text);
                   }
-                
+
                   function randomStringGenerator(poolOfChars, lengthOfString) {
                     const charsArray = poolOfChars.split("")
                     const charsArrayLength = charsArray.length
@@ -138,31 +76,38 @@ export default {
                     crypto.getRandomValues(randomNumbersArray)
                     return Array.from(randomNumbersArray).map((x) => charsArray[x % charsArrayLength]).join("")
                   }
-                
+
                   function generateEmail(size) {
                     const randomEmailUser = randomStringGenerator("wertupadfghjkzcnm234679", size)
                     document.getElementById("username").value = randomEmailUser;
                     document.getElementById("kuba86.com").value = randomEmailUser + "@kuba86.com";
                     document.getElementById("k86.addy.io").value = randomEmailUser + "@k86.addy.io";
                   }
-                  
+
                   const numbers = "0123456789";
                   const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
                   const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                   const symbols = "-!^_,.";
-                
+
                   function generatePassword(size) {
                     document.getElementById("password").value = randomStringGenerator(numbers+lowerLetters+upperLetters, size)
                   }
                 </script>
               </body>
-            </html>
-            `;
+            </html>"""
 
-        return new Response(html, {
-            headers: {
-                'content-type': 'text/html;charset=UTF-8',
-            },
-        });
-    },
-};
+    js.Dynamic.global.Promise
+      .resolve(
+        js.Dynamic.newInstance(js.Dynamic.global.Response)(
+          html,
+          js.Dynamic.literal(
+            headers = js.Dynamic.literal(
+              "content-type" -> "text/html;charset=UTF-8"
+            )
+          )
+        )
+      )
+      .asInstanceOf[js.Promise[js.Dynamic]]
+
+  }
+}
