@@ -1,13 +1,14 @@
 {
   "name": "generate",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
-    "build": "scala-cli --power package src/index.scala --js --js-module-kind es -o src/index.js -f",
+    "build": "scala-cli --power package . -o src/index.js -f",
     "start": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "update": "npm outdated; npm install -g npm-check-updates; ncu; ncu -u; npm install"
   },
   "devDependencies": {
-    "wrangler": "^4.101.0"
+    "wrangler": "^4.103.0"
   },
   "private": true
 }

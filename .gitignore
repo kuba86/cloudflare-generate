@@ -13,3 +13,4 @@ node_modules/
 .wrangler
 src/index.js
 .scala-build/
+.bsp

@@ -6,92 +6,10 @@ import scala.scalajs.js.JSConverters._
 
 @JSExportTopLevel("default")
 object Worker extends js.Object {
-  val fetch: js.Function3[js.Dynamic, js.Dynamic, js.Dynamic, js.Promise[js.Dynamic]] = { (request: js.Dynamic, env: js.Dynamic, ctx: js.Dynamic) =>
-    val realIp = request.headers.get("x-real-ip").asInstanceOf[String]
-    val connectingIp = request.headers.get("cf-connecting-ip").asInstanceOf[String]
-    //val url1 = s"https://ipinfo.io/$realIp?token=${env.selectDynamic("ipinfo_token")}"
-
-    def apiCall(url: String): Future[js.Dynamic] = {
-      js.Dynamic.global.fetch(url).asInstanceOf[js.Promise[js.Dynamic]].toFuture.flatMap { response =>
-        response.text().asInstanceOf[js.Promise[String]].toFuture
-      }.map { result =>
-        js.JSON.parse(result)
-      }
-    }
-
-    // val json = await apiCall(url1)
-    val json = js.Dynamic.global.json // Map JS global scope for 'json'
-
-    def getCurrentDateTimeInWarsaw(): String = {
-      val now = js.Dynamic.newInstance(js.Dynamic.global.Date)()
-      val options = js.Dynamic.literal(
-        timeZone = "Europe/Warsaw",
-        year = "numeric",
-        month = "2-digit",
-        day = "2-digit",
-        hour = "2-digit",
-        minute = "2-digit",
-        second = "2-digit"
-      )
-      now.applyDynamic("toLocaleString")("pl-PL", options).asInstanceOf[String]
-    }
-
-    val host = request.headers.get("host").asInstanceOf[String]
-    val urlStr = request.url.asInstanceOf[String]
-
-    val urlLastPart = urlStr
-      .replace("https://", "")
-      .replace("http://", "")
-      .replace((if (host == null) "" else host) + "/", "")
-
-    val processFuture: Future[Unit] = if (urlLastPart != "favicon.ico" && 1 == 0) {
-      val controller = js.Dynamic.newInstance(js.Dynamic.global.AbortController)()
-      val timeoutId = js.Dynamic.global.setTimeout(() => controller.abort(), 3000)
-
-      val fetchFuture = js.Dynamic.global.fetch("https://ntfy.kuba86.com/cloudflare-workers", js.Dynamic.literal(
-        method = "POST",
-        headers = js.Dynamic.literal(
-          "Authorization" -> s"Bearer ${env.selectDynamic("ntfy_token")}",
-          "Title" -> s"Generate | $realIp",
-          "Priority" -> "low",
-          "Tags" -> "cloudflare,Generate"
-        ),
-        signal = controller.signal,
-        body = s"$urlLastPart\n" +
-               s"${getCurrentDateTimeInWarsaw()}\n" +
-               s"IP: $realIp\n" +
-               s"Organization: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("org")}\n" +
-               s"Hostname: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("hostname")}\n" +
-               s"Country: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("country")}\n" +
-               s"Region: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("region")}\n" +
-               s"City: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("city")}\n" +
-               s"Postal: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("postal")}\n" +
-               s"Timezone: ${if (js.isUndefined(json)) "undefined" else json.selectDynamic("timezone")}\n" +
-               s"UA: ${request.headers.get("user-agent")}\n"
-      )).asInstanceOf[js.Promise[js.Dynamic]].toFuture
-
-      fetchFuture.map(_ => ()).recover { case error: Throwable =>
-        error match {
-          case jsErr: js.JavaScriptException =>
-            val exceptionObj = jsErr.exception.asInstanceOf[js.Dynamic]
-            if (exceptionObj.selectDynamic("name").asInstanceOf[String] == "AbortError") {
-              js.Dynamic.global.console.log("Fetch request timed out after 1 second")
-            } else {
-              js.Dynamic.global.console.error("Fetch error:", exceptionObj)
-            }
-          case _ =>
-            js.Dynamic.global.console.error("Fetch error:", error.getMessage)
-        }
-      }.map { _ =>
-        js.Dynamic.global.clearTimeout(timeoutId)
-        ()
-      }
-    } else {
-      Future.successful(())
-    }
-
-    processFuture.map { _ =>
-      val html = """<!doctype html>
+  val fetch: js.Function3[js.Dynamic, js.Dynamic, js.Dynamic, js.Promise[
+    js.Dynamic
+  ]] = { (request: js.Dynamic, env: js.Dynamic, ctx: js.Dynamic) =>
+    val html = """<!doctype html>
             <html lang="en" data-bs-theme="dark">
               <head>
                 <meta charset="utf-8">
@@ -130,7 +48,7 @@ object Worker extends js.Object {
                       <button class="btn btn-primary btn-sm" type="button" onclick="copyTxt('k86.addy.io');">Copy</button>
                     </div>
                   </div>
-                
+
                   <br>
                   <h3>Password: <button class="btn btn-primary btn-sm" type="button" onclick="generatePassword(20);">Generate</button></h3>
                   <div class="row">
@@ -150,7 +68,7 @@ object Worker extends js.Object {
                     const text = document.getElementById(id).value;
                     navigator.clipboard.writeText(text);
                   }
-                
+
                   function randomStringGenerator(poolOfChars, lengthOfString) {
                     const charsArray = poolOfChars.split("")
                     const charsArrayLength = charsArray.length
@@ -158,19 +76,19 @@ object Worker extends js.Object {
                     crypto.getRandomValues(randomNumbersArray)
                     return Array.from(randomNumbersArray).map((x) => charsArray[x % charsArrayLength]).join("")
                   }
-                
+
                   function generateEmail(size) {
                     const randomEmailUser = randomStringGenerator("wertupadfghjkzcnm234679", size)
                     document.getElementById("username").value = randomEmailUser;
                     document.getElementById("kuba86.com").value = randomEmailUser + "@kuba86.com";
                     document.getElementById("k86.addy.io").value = randomEmailUser + "@k86.addy.io";
                   }
-                  
+
                   const numbers = "0123456789";
                   const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
                   const upperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                   const symbols = "-!^_,.";
-                
+
                   function generatePassword(size) {
                     document.getElementById("password").value = randomStringGenerator(numbers+lowerLetters+upperLetters, size)
                   }
@@ -178,11 +96,18 @@ object Worker extends js.Object {
               </body>
             </html>"""
 
-      js.Dynamic.newInstance(js.Dynamic.global.Response)(html, js.Dynamic.literal(
-        headers = js.Dynamic.literal(
-          "content-type" -> "text/html;charset=UTF-8"
+    js.Dynamic.global.Promise
+      .resolve(
+        js.Dynamic.newInstance(js.Dynamic.global.Response)(
+          html,
+          js.Dynamic.literal(
+            headers = js.Dynamic.literal(
+              "content-type" -> "text/html;charset=UTF-8"
+            )
+          )
         )
-      ))
-    }.toJSPromise
+      )
+      .asInstanceOf[js.Promise[js.Dynamic]]
+
   }
 }
