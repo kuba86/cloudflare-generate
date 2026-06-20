@@ -1,8 +1,5 @@
 import scala.scalajs.js
-import scala.scalajs.js.annotation._
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
-import scala.concurrent.Future
-import scala.scalajs.js.JSConverters._
+import scala.scalajs.js.annotation.*
 
 @JSExportTopLevel("default")
 object Worker extends js.Object {
@@ -16,7 +13,7 @@ object Worker extends js.Object {
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha256-PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g=" crossorigin="anonymous">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous">
-                <title>Generate - 1.0.0</title>
+                <title>Generate - 2.0.0</title>
               </head>
               <body>
                 <div class="container">
