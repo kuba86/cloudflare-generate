@@ -9,7 +9,7 @@
     "update": "npm outdated; npm install -g npm-check-updates; ncu; ncu -u; npm install"
   },
   "devDependencies": {
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.105.0"
   },
   "private": true
 }
