@@ -22,7 +22,7 @@ This project implements a Cloudflare Worker that:
 1. Clone the repository
 2. Install dependencies:
 ``` bash
-   npm install
+npm install
 ```
 1. Start local development server:
 ``` bash
